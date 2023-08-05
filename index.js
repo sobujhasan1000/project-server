@@ -30,6 +30,8 @@ async function run() {
 
     const projectCollection=client.db('projecttest').collection('info');
 
+    const usersCollection=client.db('projecttest').collection('users');
+
     // ========================== get post update modify here ==================
 
 
