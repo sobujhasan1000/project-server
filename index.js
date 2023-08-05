@@ -28,7 +28,7 @@ async function run() {
 
     // ======================== all collection here ==========================
 
-    const projectCollection=client.db('projecttest').collection('user');
+    const projectCollection=client.db('projecttest').collection('info');
 
     // ========================== get post update modify here ==================
 
