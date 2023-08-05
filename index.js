@@ -29,8 +29,15 @@ async function run() {
 
     const projectCollection = client.db("projecttest").collection("info");
 
+    const usersCollection=client.db('projecttest').collection('users');
+
     // ========================== get post update modify here ==================
     app.get("/info", async (req, res) => {
+      const result = await projectCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/users:id", async (req, res) => {
       const result = await projectCollection.find().toArray();
       res.send(result);
     });
