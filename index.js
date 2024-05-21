@@ -1,4 +1,5 @@
 const express = require("express");
+
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
@@ -23,13 +24,13 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
 
     // ======================== all collection here ==========================
 
     const projectCollection = client.db("projecttest").collection("info");
 
-    const usersCollection = client.db("projecttest").collection("users");
+    const productsCollection = client.db("projecttest").collection("products");
 
     // ========================== get post update modify here ==================
     app.get("/info", async (req, res) => {
@@ -37,15 +38,51 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/info/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
+    // products collection get all products
+
+    app.get("/products", async (req, res) => {
+      try {
+        const result = await productsCollection.find().toArray();
+        if (!result || result.length === 0) {
+          console.log("No products found");
+          res.status(404).send("No products found");
+        } else {
+          res.send(result);
+        }
+      } catch (error) {
+        console.error("Error retrieving products:", error);
+        res.status(500).send("Internal Server Error");
+      }
+    });
+
+    // get fixed data
+
+    app.get("/products/:productId", async (req, res) => {
+      const productId = req.params.productId;
+      try {
+        const product = await productsCollection.findOne({
+          _id: ObjectId(productId),
+        });
+        if (!product) {
+          res.status(404).json({ message: "Product not found" });
+          return;
+        }
+        res.json(product);
+      } catch (error) {
+        console.error("Error retrieving product details:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    });
+
+    app.get("/info/:name", async (req, res) => {
+      const name = req.params.name;
+      const query = { name: name };
       const result = await projectCollection.findOne(query);
       res.send(result);
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
