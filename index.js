@@ -61,7 +61,7 @@ async function run() {
       const productId = req.params.productId;
       try {
         const product = await productsCollection.findOne({
-          _id: ObjectId(productId),
+          _id: new ObjectId(productId),
         });
         if (!product) {
           res.status(404).json({ message: "Product not found" });
