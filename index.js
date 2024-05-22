@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
 
     // ======================== all collection here ==========================
 
@@ -61,7 +61,7 @@ async function run() {
       const productId = req.params.productId;
       try {
         const product = await productsCollection.findOne({
-          _id: ObjectId(productId),
+          _id: new ObjectId(productId),
         });
         if (!product) {
           res.status(404).json({ message: "Product not found" });
