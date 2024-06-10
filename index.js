@@ -40,7 +40,7 @@ async function run() {
 
     // products collection get all products
 
-    app.get("/products", async (req, res) => {
+    app.get("/laptops", async (req, res) => {
       try {
         const result = await productsCollection.find().toArray();
         if (!result || result.length === 0) {
@@ -57,7 +57,7 @@ async function run() {
 
     // get fixed data
 
-    app.get("/products/:productId", async (req, res) => {
+    app.get("/laptops/:productId", async (req, res) => {
       const productId = req.params.productId;
       try {
         const product = await productsCollection.findOne({
