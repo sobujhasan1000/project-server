@@ -28,9 +28,24 @@ async function run() {
 
     // ======================== all collection here ==========================
 
+    const userCollection = client.db("projecttest").collection("users");
+
     const projectCollection = client.db("projecttest").collection("info");
 
     const productsCollection = client.db("projecttest").collection("products");
+
+    // ================== user insert =========================
+
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email };
+      const insertUser = await userCollection.findOne(query);
+      if (insertUser) {
+        return res.send({ massege: "already inserted" });
+      }
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
 
     // ========================== get post update modify here ==================
     app.get("/info", async (req, res) => {
