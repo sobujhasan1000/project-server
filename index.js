@@ -55,7 +55,7 @@ async function run() {
       }
     });
 
-    // get fixed data
+    // get fixed data //
 
     app.get("/laptops/:productId", async (req, res) => {
       const productId = req.params.productId;
